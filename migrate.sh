@@ -33,7 +33,7 @@ print_help() {
 	echo "		Lists all currently installed migrations"
 	echo "	migrate [<steps>|all]"
 	echo "		Installs new migrations."
-	echo "		If <steps> is specified, will perform <steps> migrations"
+	echo "		If <steps> is numeric, will perform <steps> migrations"
 	echo "		If 'all' is specified, will perform all available migrations"
 	echo "		If nothing is specified, <steps> defaults to '1'"
 	echo "	new"

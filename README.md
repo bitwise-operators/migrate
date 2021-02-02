@@ -25,9 +25,9 @@ Usage:
 
 `./migrate.sh <command>`
 
-where `<command>` is one of the following:
+where *&lt;command&gt;* is one of the following:
 
-#### create `<name>` ####
+#### create &lt;name&gt; ####
 
 Creates a new migration and rollback file, with format `YYYYMMDDHHIISS_<name>.sql`
 	
@@ -35,21 +35,21 @@ Creates a new migration and rollback file, with format `YYYYMMDDHHIISS_<name>.sq
 
 Lists all currently installed migrations
 
-#### migrate [`<steps>`| all ] ####
+#### migrate [&lt;steps&gt;| all ] ####
 
 Installs new migrations.
 
-If `<steps>` is specified, will perform `<steps>` migrations
+If *&lt;steps&gt;* is numeric, will perform *&lt;steps&gt;* migrations
 
 If 'all' is specified, will perform all available migrations
 
-If nothing is specified, `<steps>` defaults to '1'
+If nothing is specified, *&lt;steps&gt;* defaults to '1'
 
 #### new ####
 
 Shows all migrations waiting to be deployed
 	
-#### rollback [`<steps>`| all ] ####
+#### rollback [&lt;steps&gt;| all ] ####
 
 Similar to migrate, but will roll back the most recent migration(s)
 	
