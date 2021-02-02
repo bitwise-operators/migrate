@@ -1,0 +1,11 @@
+#	update values below as needed and copy to './config'
+
+#	Can be psql or mysql
+_DBTYPE="psql"
+_DBHOST="localhost"
+#	Generally this is 5432 for psql and 3306 for mysql
+_DBPORT="5432"
+_DBDB="mydb"
+_DBUSER="myuser"
+_DBPASS="mypassword"
+_DBTABLE="_migrations_"
