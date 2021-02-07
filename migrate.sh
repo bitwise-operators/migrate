@@ -89,7 +89,7 @@ db_scripts() {
 				err "Unknown database type"
 				exit 1;;
 		esac
-		if [ $1 = "migrations" ]; then
+		if [ $1 = "$_DIRUP" ]; then
 			db_query "INSERT INTO $_DBTABLE (name) VALUES ('$script');" > /dev/null 2>&1
 			echo "Performed migration $script";	
 		else
