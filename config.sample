@@ -9,3 +9,8 @@ _DBDB="mydb"
 _DBUSER="myuser"
 _DBPASS="mypassword"
 _DBTABLE="_migrations_"
+
+#	Set these if you want to use different directories for your migrations
+#	Paths can be relative or absolute
+#_DIRUP="up"
+#_DIRDOWN="down"

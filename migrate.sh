@@ -77,12 +77,12 @@ db_scripts() {
 	while read -r script; do
 		case $_DBTYPE in
 			("psql")
-				psql -h "$_DBHOST" -p "$_DBPORT" -U "$_DBUSER" -d "$_DBDB" -c "\set ON_ERROR_STOP TRUE" -f  "./$1/$script"
+				psql -h "$_DBHOST" -p "$_DBPORT" -U "$_DBUSER" -d "$_DBDB" -c "\set ON_ERROR_STOP TRUE" -f  "$1/$script"
 				echo "$?"
 				
 			;;
 			("mysql")
-				mysql -h "$_DBHOST" -P "$_DBPORT" -u "$_DBUSER" -D "$_DBDB" < "./$1/$script"
+				mysql -h "$_DBHOST" -P "$_DBPORT" -u "$_DBUSER" -D "$_DBDB" < "$1/$script"
 				echo "$?"
 				;;
 			(*)
@@ -138,6 +138,16 @@ else
 	exit 1
 fi
 
+#	Check directories
+if [ ! -d "${_DIRUP:=up}" ]; then
+	err "Missing migration directory $_DIRUP"
+	exit 1;
+elif [ ! -d "${_DIRDOWN:=down}" ]; then
+	err "Missing rollback directory $_DIRDOWN"
+	exit 1;
+fi
+
+
 cmd=${1:-"empty"}
 shift || true
 
@@ -154,8 +164,8 @@ case $cmd in
 			exit 1
 		fi
 		newname="$(date +%Y%m%d%H%M%S)_$1.sql"
-		touch "./migrations/$newname"
-		touch "./rollbacks/$newname"
+		touch "$_DIRUP/$newname"
+		touch "$_DIRDOWN/$newname"
 		exit;;
 	("list")
 		db_init
@@ -164,17 +174,17 @@ case $cmd in
 		exit;;
 	("migrate")
 		db_init
-		find ./migrations -type f -maxdepth 1 -name "*.sql" -exec basename {} \; | awk '{$1=$1;print}' | sort | comm -13 "$tmpfile" - | limit | db_scripts "migrations"
+		find "$_DIRUP" -type f -maxdepth 1 -name "*.sql" -exec basename {} \; | awk '{$1=$1;print}' | sort | comm -13 "$tmpfile" - | limit | db_scripts "$_DIRUP"
 		cleanup
 		exit;;		
 	("new")
 		db_init
-		find ./migrations -type f -maxdepth 1 -name "*.sql" -exec basename {} \; | awk '{$1=$1;print}' | sort | comm -13 "$tmpfile" -
+		find "$_DIRUP" -type f -maxdepth 1 -name "*.sql" -exec basename {} \; | awk '{$1=$1;print}' | sort | comm -13 "$tmpfile" -
 		cleanup
 		exit;;			
 	("rollback")
 		db_init
-		find ./rollbacks -type f -maxdepth 1 -name "*.sql" -exec basename {} \; | awk '{$1=$1;print}' | sort | comm -12 "$tmpfile" - | sort -r | limit | db_scripts "rollbacks"
+		find "$_DIRDOWN" -type f -maxdepth 1 -name "*.sql" -exec basename {} \; | awk '{$1=$1;print}' | sort | comm -12 "$tmpfile" - | sort -r | limit | db_scripts "$_DIRDOWN"
 		cleanup
 		exit;;
 	("help")

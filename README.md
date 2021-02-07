@@ -2,9 +2,9 @@
 A simple posix-compliant shell script to facilitate database migrations for psql &amp; mysql
 
 ##	Usage
-Create two directories called `migrations` and `rollbacks`. These will contain, respectively, the migrations and rollback scripts for your project. The migration script should be executed in the directory containing both.
+Create two directories called `up` and `down`. These will contain, respectively, the migrations and rollback scripts for your project. If these are not subdirectories of the directory where you are executing the migration script, or if you want to use different names, set the correct paths in the configuration file (see below).
 
-Each migration in the `migrations` directory should be matched by an equally named rollback script in the `rollbacks` directory. You can easily create these using the supplied `create` command, which will timestamp the files for automatic sorting.
+Each migration in the `up` directory should be matched by an equally named rollback script in the `down` directory. You can easily create these using the supplied `create` command, which will timestamp the files for automatic sorting.
 
 Each script should be a valid SQL script for the database you are using and have a filename ending in `.sql`
 
@@ -19,6 +19,11 @@ The following fields need to be set:
 * _DBUSER: The user to connect as
 * _DBPASS: The password to use when connecting. If you have set up password-less logins in your user account, or your database doesn't require a password, use an empty string
 * _DBTABLE: The table used to keep track which migrations have been run. The script will create the table if needed.
+
+There are also two optional settings:
+
+* _DIRUP: The name of the directory containing the migrations. Defaults to 'up'
+* _DIRDOWN: The name of the directory containing the rollback scripts. Defaults to 'down'
 
 ## Commands
 Usage: 
